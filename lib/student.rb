@@ -12,19 +12,18 @@ class Student
 
   def self.create_table
     sql = <<-SQL
-      CREATE TABLE IF NOT EXISTS students (
+      CREATE TABLE IF NOT EXISTS students(
         id INTEGER PRIMARY KEY,
         name TEXT,
         grade INTEGER
       );
-      SQL
+    SQL
 
-      DB[:conn].execute(sql)
+    DB[:conn].execute(sql)
   end
 
   def self.drop_table
     sql = "DROP TABLE students;"
-
     DB[:conn].execute(sql)
   end
 
@@ -32,42 +31,34 @@ class Student
     if self.id
       self.update
     else
-
       sql = <<-SQL
         INSERT INTO students (name, grade)
-        VALUES (?, ?);
+        VALUES (?,?);
         SQL
 
         DB[:conn].execute(sql, self.name, self.grade)
-
         @id = DB[:conn].execute("SELECT last_insert_rowid() FROM students")[0][0]
       end
-    end
+  end
 
   def update
-    sql = <<-SQL
-      UPDATE students
-      SET name = ?, grade = ?
-      WHERE id = ?;
-    SQL
-
+    sql = "UPDATE students SET name = ?, grade = ? WHERE id = ?"
     DB[:conn].execute(sql, self.name, self.grade, self.id)
   end
 
   def self.create(name, grade)
-    Student.new(name, grade).tap {|student| student.save}
+    Student.new(name, grade).tap { |student| student.save }
   end
 
   def self.new_from_db(row)
-    self.new(row[0], row[1], row[2]).tap {|student|}
+    Student.new(row[0], row[1], row[2]).tap {|student|}
   end
 
   def self.find_by_name(name)
     sql = <<-SQL
       SELECT *
       FROM students
-      WHERE name = ?
-      LIMIT 1
+      WHERE name = ?;
     SQL
 
     DB[:conn].execute(sql, name).map { |row| self.new_from_db(row) }.first
