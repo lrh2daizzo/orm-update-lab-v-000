@@ -47,7 +47,7 @@ class Student
   end
 
   def self.new_from_db(row)
-    Student.new(row[1], row[2]).tap {|s| s.id = row[0]}
+    Student.new(row[0], row[1], row[2]).tap {|s| s}
   end
   # Remember, you can access your database connection anywhere in this class
   #  with DB[:conn]
