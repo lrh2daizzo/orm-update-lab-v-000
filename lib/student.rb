@@ -49,6 +49,18 @@ class Student
   def self.new_from_db(row)
     Student.new(row[0], row[1], row[2]).tap {|s| s}
   end
+
+  def self.find_by_name(name)
+    sql = <<-SQL
+      SELECT *
+      FROM students
+      WHERE name = ?
+      LIMIT 1;
+    SQL
+
+    DB[:conn].execute(sql, self.name)
+  end
+  
   # Remember, you can access your database connection anywhere in this class
   #  with DB[:conn]
 
