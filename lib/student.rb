@@ -58,7 +58,7 @@ class Student
       LIMIT 1;
     SQL
 
-    DB[:conn].execute(sql, self.name)
+    DB[:conn].execute(sql, self.name).first
   end
 
   # Remember, you can access your database connection anywhere in this class
