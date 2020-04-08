@@ -43,7 +43,7 @@ class Student
     end
   end
 
-  def self.create(name:, grade:)
+  def self.create(name, grade)
     Student.new(name, grade).tap { |s| s.save}
   end
 
