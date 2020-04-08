@@ -46,6 +46,9 @@ class Student
     Student.new(name, grade).tap { |s| s.save}
   end
 
+  def self.new_from_db(row)
+    Student.new(row[1], row[2]).tap {|s| s.id = row[0]}
+  end
   # Remember, you can access your database connection anywhere in this class
   #  with DB[:conn]
 
